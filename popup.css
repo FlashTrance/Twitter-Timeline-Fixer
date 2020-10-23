@@ -1,0 +1,107 @@
+/* WEB FONTS */
+@import url(https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap);
+
+/* SWITCHES */
+/* Hide default HTML checkbox */
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+/* Switch */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 45px;
+	height: 25.5px;
+}
+
+/* Slider */
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .3s;
+	transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 19.5px;
+  width: 19.5px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: #4287f5;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(19.5px);
+  -ms-transform: translateX(19.5px);
+  transform: translateX(19.5px);
+}
+
+/* Rounded slider */
+.slider.round {
+	border-radius: 17px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+
+
+/* TEXT */
+.logo {border-bottom: 1px solid black;}
+
+.wrapper {width: auto; white-space: nowrap;}
+
+.switch {float: right}
+
+.center {padding-top: 8px; margin: auto; width: auto;}
+
+.wrap2 {padding-bottom: 13px; padding-top: 10px;}
+
+.option {line-height: 25px; font-family: "Cairo", sans-serif; font-size: 17px; float: left;}
+
+.line {padding-top: 20px; border-bottom: 1px ridge;}
+
+
+/* BUTTON */
+.button-cool {
+	display: inline-block;
+	padding: 0.7em 1.4em;
+	margin: 0 0.3em 0.3em 0;
+	border-radius: 0.15em;
+	width: 180px;
+	text-decoration: none;
+	line-height: 15px;
+	font-size: 15px;
+	font-family: 'Cairo', sans-serif;
+	font-weight: 600;
+	color: #FFFFFF;
+	background-color: #3369ff;
+	box-shadow: inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+	text-align: center;
+	position: relative;
+}
+.button-cool:active {
+	top:0.1em;
+}
+@media all and (max-width:200em) {
+	.button-cool {
+		display:block;
+		margin:0.4em auto;
+	}
+}

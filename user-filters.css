@@ -1,0 +1,60 @@
+/* WEB FONTS */
+@import url(https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap);
+
+/* Style inputs, select elements and textareas */
+input[type=text], select, textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	resize: vertical;
+}
+
+/* Container */
+.container {
+	border-radius: 5px;
+	background-color: #f2f2f2;
+	padding: 20px;
+}
+
+/* Clear floats after columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+  /* TEXT */
+.text {line-height: 25px; font-family: "Cairo", sans-serif; font-size: 17px; float: left;}
+
+.line {border-bottom: 1px ridge black;}
+
+
+  /* BUTTON */
+.button-cool {
+	display: inline-block;
+	padding: 0.7em 1.4em;
+	margin: 0 0.3em 0.3em 0;
+	border-radius: 0.15em;
+	text-decoration: none;
+	line-height: 20px;
+	font-size: 20px;
+	font-family: 'Cairo', sans-serif;
+	font-weight: 600;
+	color: #FFFFFF;
+	background-color: #3369ff;
+	box-shadow: inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+	text-align: center;
+	position: relative;
+}
+.button-cool:active {
+	top:0.1em;
+}
+@media all and (max-width:200em) {
+	.button-cool {
+		display:block;
+		margin:0.4em auto;
+	}
+}

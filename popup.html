@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<title>Twitter Timeline Fixer</title>
+		<link rel="stylesheet" type="text/css" href="popup.css">
+	</head>
+
+	<body>
+	<div class="wrapper">
+		<img src="images/Logo.png" alt="Logo" class="logo">
+	
+		<div class="wrap2">
+			<span class="option"> Hide "Liked" Tweets</span>
+			<label class="switch">
+				<input type="checkbox" id="hideLikes">
+				<span class="slider round"></span>
+			</label>
+		</div>	
+
+		<div class="line"></div>
+
+		<div class="wrap2">
+			<span class="option">Hide "Reply" Tweets</span>
+			<label class="switch">
+				<input type="checkbox" id="hideComments">
+				<span class="slider round"></span>
+			</label>
+		</div>	
+
+		<div class="line"></div>
+
+		<div class="wrap2">
+			<span class="option">Hide "Followed By" Tweets</span>
+			<label class="switch">
+				<input type="checkbox" id="hideFollowed">
+				<span class="slider round"></span>
+			</label>
+		</div>	
+
+		<div class="line"></div>
+
+		<div class="wrap2">
+			<span class="option">Hide Retweets</span>
+			<label class="switch">
+				<input type="checkbox" id="hideRetweets">
+				<span class="slider round"></span>
+			</label>
+		</div>	
+		
+		<div class="line"></div>
+	</div>
+
+	<div class="center">
+		<button class="button-cool" id="user-filter-button">Setup Retweet Filter</button>
+	</div>
+
+	<div class="center">
+		<button class="button-cool" id="help-button">Help</button>
+	</div>
+	
+		<script src = "popup.js"></script>
+	</body> 
+	
+</html>

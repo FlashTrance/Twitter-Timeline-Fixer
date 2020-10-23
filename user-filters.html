@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<title>Retweet Filter</title>
+		<link rel="stylesheet" type="text/css" href="user-filters.css">
+	</head>
+
+	<body>
+		<div class="container">
+			
+			<h1>RETWEET FILTER</h1>
+
+			<div class="row">
+				<div class="text">
+					-> This filter lets you specify which Retweets you want to hide on a per-user basis.<br>
+					-> Enter multiple users by separating their Twitter handles with commas (the Twitter handle is the unique identifier that appears after the @ sign in a profile).<br>
+					-> Click the "SAVE" button and make sure "Hide Retweets" is enabled to see the changes.<br><br>
+					EXAMPLE: If you enter "LZZYHALE, Microsoft", then only Retweets by @LZZYHALE and @Microsoft will get hidden. All other Retweets will NOT be hidden.
+				</div>
+			</div>
+
+			<br>
+			<div class="line"></div>
+			<br>
+
+			<div class="row">
+				<textarea id="retweets-field" placeholder="Twitter handles of retweets to hide..." style="height:200px"></textarea>
+			</div>
+
+			<br>
+			<div class="row">
+				<button class="button-cool" id="save-button">SAVE</button>
+			</div>
+		</div>
+
+		<script src = "user-filters.js"></script>
+	</body> 
+	
+</html>

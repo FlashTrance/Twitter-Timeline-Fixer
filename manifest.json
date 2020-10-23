@@ -1,0 +1,38 @@
+{
+	"name": "Twitter Timeline Fixer",
+	"version": "1.0.0",
+	"description": "Allows users to choose what types of tweets appear in their timeline and to hide Retweets on a per-user basis.",
+	"manifest_version": 2,
+	
+	"permissions": ["activeTab", "declarativeContent", "storage"],
+	
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
+	
+	"content_scripts": [
+		{
+			"matches": ["*://*.twitter.com/*"],
+			"js": ["jquery.js", "arrive.js", "contentscript.js"],
+			"run_at": "document_start"
+		}
+	],
+	
+	"page_action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "images/ico_16.png",
+			"32": "images/ico_32.png",
+			"48": "images/ico_48.png",
+			"128": "images/ico_128.png"
+		}
+	},
+	
+	"icons": {
+		"16": "images/ico_16.png",
+		"32": "images/ico_32.png",
+		"48": "images/ico_48.png",
+		"128": "images/ico_128.png"
+    }
+}
