@@ -8,7 +8,9 @@ const ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
 const LIKED_TWEET_DATA = "M12 21.638h-.014C9.403";
 const REPLY_TWEET_DATA = "M14.046";
 const FOLLOWED_TWEET_DATA = "M12.225 12.165c-1.356";
+const FOLLOW_TOPIC_DATA = "M18.265";
 const RETWEET_DATA = "M23.615";
+
 
 // INTERVAL DATA
 var hideCommentHandle;
@@ -18,7 +20,7 @@ const MAX_REPEATS = 10;
 
 // CHROME STORAGE
 // Get pop-up switch values
-var likesCheck = false, commentsCheck = false, followedCheck = false, retweetsCheck = false;
+var likesCheck = false, commentsCheck = false, followedCheck = false, topicCheck = false, retweetsCheck = false;
 chrome.storage.sync.get("likeSwitch", function(switchState) {
 	likesCheck = switchState.likeSwitch.checked;
 	if (likesCheck) { hideLikes(true); }
@@ -30,6 +32,10 @@ chrome.storage.sync.get("commentSwitch", function(switchState) {
 chrome.storage.sync.get("followedSwitch", function(switchState) {
 	followedCheck = switchState.followedSwitch.checked;
 	if (followedCheck) { hideFollowed(true); }
+});
+chrome.storage.sync.get("topicSwitch", function(switchState) {
+	topicCheck = switchState.topicSwitch.checked;
+	if (topicCheck) { hideTopic(true); }
 });
 
 
@@ -54,60 +60,74 @@ $(document).arrive("article", function(articleData) {
 	{
 		// Get SVG data to check what type of article this is
 		let svg_data = $(articleData).find("path").attr("d");
-	
-		// HIDE OTHERS' LIKES
-		if (likesCheck == true) 
-		{ 
-			// Check if this SVG belongs to a Liked tweet, and if so, hide the whole article
-			if (svg_data !== undefined && svg_data.startsWith(LIKED_TWEET_DATA))
-			{
-				$(articleData).closest(ARTICLE_DIV_CLASS).hide();
-			}
-		}
-	
-		// HIDE OTHERS' REPLIES
-		if (commentsCheck == true) 
+		if (svg_data !== undefined)
 		{
-			// Check if this SVG belongs to a Reply tweet, and if so, hide the whole article
-			if (svg_data !== undefined && svg_data.startsWith(REPLY_TWEET_DATA))
-			{
-				// Get references to what we want to hide so we know when to stop the timer
-				var reply_div = $(articleData).closest(ARTICLE_REPLY_DIV_CLASS).parent().next();
-				var parent_div = $(articleData).closest(ARTICLE_REPLY_DIV_CLASS);
-	
-				hideCommentHandle = setInterval(hideReplyTimer, 200, reply_div, parent_div);
-			}
-		} 
-	
-		// HIDE "FOLLOWED BY" TWEETS
-		if (followedCheck == true) 
-		{ 
-			// Check if this SVG belongs to a Retweet, and if so, hide the whole article
-			if (svg_data !== undefined && svg_data.startsWith(FOLLOWED_TWEET_DATA))
-			{
-				$(articleData).closest(ARTICLE_DIV_CLASS).hide();	
-			}
-		} 
-	
-		// HIDE OTHERS' RETWEETS
-		if (retweetsCheck == true) 
-		{ 
-			// Check if this SVG belongs to a Retweet
-			if (svg_data !== undefined && svg_data.startsWith(RETWEET_DATA))
-			{
-				// If no filter is applied, just hide the Retweet
-				if (retweetsFilter.length == 0) { $(articleData).closest(ARTICLE_DIV_CLASS).hide(); }
-	
-				else
+			// HIDE OTHERS' LIKES
+			if (likesCheck == true) 
+			{ 
+				// Check if this SVG belongs to a Liked tweet, and if so, hide the whole article
+				if (svg_data.startsWith(LIKED_TWEET_DATA))
 				{
-					// If user has any handles in the Retweet Filter, get the Twitter handle of the Retweeter and check if it's listed
-					let twitter_handle = $(articleData).find("a").attr("href");
-					twitter_handle = twitter_handle.slice(1, twitter_handle.length);
-	
-					if (retweetsFilter.includes(twitter_handle)) { $(articleData).closest(ARTICLE_DIV_CLASS).hide(); }	
+					$(articleData).closest(ARTICLE_DIV_CLASS).hide();
 				}
 			}
-		} 
+		
+			// HIDE OTHERS' REPLIES
+			if (commentsCheck == true) 
+			{
+				// Check if this SVG belongs to a Reply tweet, and if so, hide the whole article
+				if (svg_data.startsWith(REPLY_TWEET_DATA))
+				{
+					// Get references to what we want to hide so we know when to stop the timer
+					var reply_div = $(articleData).closest(ARTICLE_REPLY_DIV_CLASS).parent().next();
+					var parent_div = $(articleData).closest(ARTICLE_REPLY_DIV_CLASS);
+		
+					hideCommentHandle = setInterval(hideReplyTimer, 200, reply_div, parent_div);
+				}
+			} 
+		
+			// HIDE "FOLLOWED BY" TWEETS
+			if (followedCheck == true) 
+			{ 
+				// Check if this SVG belongs to a Followed By tweet, and if so, hide the whole article
+				if (svg_data.startsWith(FOLLOWED_TWEET_DATA))
+				{
+					$(articleData).closest(ARTICLE_DIV_CLASS).hide();	
+				}
+			} 
+
+			// HIDE "FOLLOW TOPIC" TWEETS
+			if (topicCheck == true)
+			{
+				// Check if this SVG belongs to a Follow Topic tweet, and if so, hide the whole article
+				if (svg_data.startsWith(FOLLOW_TOPIC_DATA))
+				{
+					$(articleData).closest(ARTICLE_DIV_CLASS).hide();	
+				}
+			}
+		
+			// HIDE OTHERS' RETWEETS
+			if (retweetsCheck == true) 
+			{ 
+				// Check if this SVG belongs to a Retweet
+				if (svg_data.startsWith(RETWEET_DATA))
+				{
+					// If no filter is applied, just hide the Retweet
+					if (retweetsFilter.length == 0) { $(articleData).closest(ARTICLE_DIV_CLASS).hide(); }
+		
+					else
+					{
+						// If user has any handles in the Retweet Filter, get the Twitter handle of the Retweeter and check if it's listed
+						let twitter_handle = $(articleData).find("a").attr("href");
+						twitter_handle = twitter_handle.slice(1, twitter_handle.length);
+		
+						if (retweetsFilter.includes(twitter_handle)) { $(articleData).closest(ARTICLE_DIV_CLASS).hide(); }	
+					}
+				}
+			} 
+		}
+	
+
 	}
 });
 
@@ -138,9 +158,9 @@ function receivedMessage(message, sender, sendResponse) {
 	else if (message.command == "manualHideCheck")
 	{
 		if (likesCheck)    { hideLikes(true); }
-		if (commentsCheck) {hideComments(true);}
-		if (followedCheck) {hideFollowed(true);}
-		if (retweetsCheck) {hideRetweets(true);}
+		if (commentsCheck) { hideComments(true); }
+		if (followedCheck) { hideFollowed(true); }
+		if (retweetsCheck) { hideRetweets(true); }
 	}
 }
 
@@ -212,6 +232,26 @@ function hideFollowed(hideVal) {
 
 		// Check if this SVG belongs to a tweet by someone a user we follow is following, and if so, hide the article.
 		if (svg_data !== undefined && svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(FOLLOWED_TWEET_DATA))
+		{
+			if (hideVal === true) { $(data).closest(ARTICLE_DIV_CLASS).hide(); }
+			else 				  { $(data).closest(ARTICLE_DIV_CLASS).show(); }		
+		}
+	});
+}
+
+// hideTopic()
+function hideTopic(hideVal) {
+	
+	// Find all the SVG images for each article on a Twitter timeline.
+	let article_refs = $("article");
+	let svg_data = "", svg_class = "";
+	article_refs.each( function(index, data)
+	{
+		svg_data = $(data).find("path").attr("d");
+		svg_class = $(data).find("svg").attr("class");
+
+		// Check if this SVG belongs to a tweet by someone a user we follow is following, and if so, hide the article.
+		if (svg_data !== undefined && svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(FOLLOW_TOPIC_DATA))
 		{
 			if (hideVal === true) { $(data).closest(ARTICLE_DIV_CLASS).hide(); }
 			else 				  { $(data).closest(ARTICLE_DIV_CLASS).show(); }		

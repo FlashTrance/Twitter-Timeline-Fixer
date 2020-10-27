@@ -4,10 +4,10 @@
 chrome.runtime.onInstalled.addListener (function() {
 	
 	// Set default state values in storage
-	chrome.storage.sync.set({"state": {"likeState": "NONE", "commentState": "NONE", "retweetState": "NONE"}}, function() {});
 	chrome.storage.sync.set({"likeSwitch": {"checked": false}}, function() {});
 	chrome.storage.sync.set({"commentSwitch": {"checked": false}}, function() {});
 	chrome.storage.sync.set({"followedSwitch": {"checked": false}}, function() {});
+	chrome.storage.sync.set({"topicSwitch": {"checked": false}}, function() {});
 	chrome.storage.sync.set({"retweetSwitch": {"checked": false}}, function() {});
 	chrome.storage.sync.set({"retweetsFilter": []}, function() {});
 	

@@ -4,6 +4,7 @@
 let hideLikes = document.getElementById("hideLikes");
 let hideComments = document.getElementById("hideComments");
 let hideFollowed = document.getElementById("hideFollowed");
+let hideTopic = document.getElementById("hideTopic");
 let hideRetweets = document.getElementById("hideRetweets");
 let filterButton = document.getElementById("user-filter-button");
 let helpButton = document.getElementById("help-button");
@@ -17,6 +18,9 @@ chrome.storage.sync.get("commentSwitch", function(switchState) {
 });
 chrome.storage.sync.get("followedSwitch", function(switchState) {
 	hideFollowed.checked = switchState.followedSwitch.checked;
+});
+chrome.storage.sync.get("topicSwitch", function(switchState) {
+	hideTopic.checked = switchState.topicSwitch.checked;
 });
 chrome.storage.sync.get("retweetSwitch", function(switchState) {
 	hideRetweets.checked = switchState.retweetSwitch.checked;
