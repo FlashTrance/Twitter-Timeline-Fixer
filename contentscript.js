@@ -149,7 +149,11 @@ function receivedMessage(message, sender, sendResponse) {
 	// Hide Followed By switch toggled
 	else if (message.command == "hideFollowed") { followedCheck = true; hideFollowed(true); }
 	else if (message.command == "showFollowed") { followedCheck = false; hideFollowed(false); }
-	
+
+	// Hide Follow Topic switch toggled
+	else if (message.command == "hideTopic") { topicCheck = true; hideTopic(true); }
+	else if (message.command == "showTopic") { topicCheck = false; hideTopic(false); }
+
 	// Hide Retweets switch toggled
 	else if (message.command == "hideRetweets") { retweetsCheck = true; hideRetweets(true); }
 	else if (message.command == "showRetweets") { retweetsCheck = false; hideRetweets(false); }
@@ -160,6 +164,7 @@ function receivedMessage(message, sender, sendResponse) {
 		if (likesCheck)    { hideLikes(true); }
 		if (commentsCheck) { hideComments(true); }
 		if (followedCheck) { hideFollowed(true); }
+		if (topicCheck)	   { hideTopic(true); }
 		if (retweetsCheck) { hideRetweets(true); }
 	}
 }

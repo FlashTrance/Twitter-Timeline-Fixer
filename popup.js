@@ -73,6 +73,21 @@ hideFollowed.onclick = function() {
 	});
 }
 
+// onClick hideTopic switch
+hideTopic.onclick = function() {
+		
+	// Save switch state settings
+	chrome.storage.sync.set({"topicSwitch": {"checked": hideTopic.checked}}, function() 
+	{
+		// Set message based on switch state
+		let msg = {command: ""};
+		if (hideTopic.checked === true) { msg = { command: "hideTopic"}; } 
+		else if (hideTopic.checked === false) { msg = { command: "showTopic"}; }
+		
+		sendMessageToContentScript(msg);
+	});
+}
+
 // onClick hideRetweets switch
 hideRetweets.onclick = function() {
 		
