@@ -1,6 +1,6 @@
 {
 	"name": "Twitter Timeline Fixer",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Allows users to choose what types of tweets appear in their timeline and to hide Retweets on a per-user basis.",
 	"manifest_version": 2,
 	

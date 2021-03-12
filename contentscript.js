@@ -1,8 +1,9 @@
 // CONTENT SCRIPT
 
 // TWITTER ARTICLE DATA (aka the secret sauce)
-const SMALL_ICON_CLASS = "r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1xzupcd";
-const SMALL_ICON_CLASS_ALT = "r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5";
+const SMALL_ICON_CLASS_LIST = ["r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1xzupcd",
+"r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5",
+"r-111h2gw r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5"];
 const ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
 const ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
 const LIKED_TWEET_DATA = "M12 21.638h-.014C9.403";
@@ -56,7 +57,7 @@ $(document).arrive("article", function(articleData) {
 
 	// Get SVG class to make sure this is a Timeline SVG rather than a Notification SVG
 	let svg_class = $(articleData).find("svg").attr("class");
-	if (svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()))
+	if (svg_class !== undefined && SMALL_ICON_CLASS_LIST.includes(svg_class.toString()))
 	{
 		// Get SVG data to check what type of article this is
 		let svg_data = $(articleData).find("path").attr("d");
@@ -184,7 +185,7 @@ function hideLikes(hideVal) {
 		svg_class = $(data).find("svg").attr("class");
 
 		// Check if this SVG belongs to a Liked tweet, and if so, hide the whole article
-		if (svg_data !== undefined && svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(LIKED_TWEET_DATA))
+		if (svg_data !== undefined && svg_class !== undefined && SMALL_ICON_CLASS_LIST.includes(svg_class.toString()) && svg_data.startsWith(LIKED_TWEET_DATA))
 		{
 			// Note: We're using "closest" to make sure we hide the whole div the article is contained in. Otherwise, there are some
 			// extra div lines that show up on the page.
@@ -206,7 +207,7 @@ function hideComments(hideVal) {
 		svg_class = $(data).find("svg").attr("class");
 
 		// Check if this SVG belongs to a Reply tweet, and if so, hide the whole article
-		if (svg_data !== undefined &&  svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(REPLY_TWEET_DATA))
+		if (svg_data !== undefined &&  svg_class !== undefined && SMALL_ICON_CLASS_LIST.includes(svg_class.toString()) && svg_data.startsWith(REPLY_TWEET_DATA))
 		{
 			if (hideVal === true) 
 			{ 
@@ -236,7 +237,7 @@ function hideFollowed(hideVal) {
 		svg_class = $(data).find("svg").attr("class");
 
 		// Check if this SVG belongs to a tweet by someone a user we follow is following, and if so, hide the article.
-		if (svg_data !== undefined && svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(FOLLOWED_TWEET_DATA))
+		if (svg_data !== undefined && svg_class !== undefined && SMALL_ICON_CLASS_LIST.includes(svg_class.toString()) && svg_data.startsWith(FOLLOWED_TWEET_DATA))
 		{
 			if (hideVal === true) { $(data).closest(ARTICLE_DIV_CLASS).hide(); }
 			else 				  { $(data).closest(ARTICLE_DIV_CLASS).show(); }		
@@ -256,7 +257,7 @@ function hideTopic(hideVal) {
 		svg_class = $(data).find("svg").attr("class");
 
 		// Check if this SVG belongs to a tweet by someone a user we follow is following, and if so, hide the article.
-		if (svg_data !== undefined && svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(FOLLOW_TOPIC_DATA))
+		if (svg_data !== undefined && svg_class !== undefined && SMALL_ICON_CLASS_LIST.includes(svg_class.toString()) && svg_data.startsWith(FOLLOW_TOPIC_DATA))
 		{
 			if (hideVal === true) { $(data).closest(ARTICLE_DIV_CLASS).hide(); }
 			else 				  { $(data).closest(ARTICLE_DIV_CLASS).show(); }		
@@ -276,7 +277,7 @@ function hideRetweets(hideVal) {
 		svg_class = $(data).find("svg").attr("class");
 
 		// Check if this SVG belongs to a Retweet
-		if (svg_data !== undefined && svg_class !== undefined && (svg_class == SMALL_ICON_CLASS.toString() || svg_class == SMALL_ICON_CLASS_ALT.toString()) && svg_data.startsWith(RETWEET_DATA))
+		if (svg_data !== undefined && svg_class !== undefined && SMALL_ICON_CLASS_LIST.includes(svg_class.toString()) && svg_data.startsWith(RETWEET_DATA))
 		{
 			// If no filter is applied, just hide the Retweet
 			if (hideVal == true && retweetsFilter.length == 0) { $(data).closest(ARTICLE_DIV_CLASS).hide(); }
