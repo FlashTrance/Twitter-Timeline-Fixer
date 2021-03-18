@@ -1,9 +1,14 @@
 // CONTENT SCRIPT
 
+// NOTE: Get this to work with other themes by checking the body style background-color, then setting the appropriate 
+// ARTICLE_DIV_CLASS and ARTICLE_REPLY_DIV_CLASS. Div classes and icon class list will need to be updated for every theme every time Twitter
+// changes something.
+
 // TWITTER ARTICLE DATA (aka the secret sauce)
-const SMALL_ICON_CLASS_LIST = ["r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1xzupcd",
-"r-111h2gw r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5",
-"r-111h2gw r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5"];
+const SMALL_ICON_CLASS_LIST = ["r-m0bqgq r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5",
+"r-9ilb82 r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5",
+"r-111h2gw r-4qtqp9 r-yyyyoo r-1yevf0r r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-meisx5",
+"r-111h2gw r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03"];
 const ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
 const ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
 const LIKED_TWEET_DATA = "M12 21.638h-.014C9.403";
@@ -11,7 +16,6 @@ const REPLY_TWEET_DATA = "M14.046";
 const FOLLOWED_TWEET_DATA = "M12.225 12.165c-1.356";
 const FOLLOW_TOPIC_DATA = "M18.265";
 const RETWEET_DATA = "M23.615";
-
 
 // INTERVAL DATA
 var hideCommentHandle;
@@ -127,8 +131,6 @@ $(document).arrive("article", function(articleData) {
 				}
 			} 
 		}
-	
-
 	}
 });
 
