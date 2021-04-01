@@ -117,14 +117,18 @@ helpButton.onclick = function() {
 
 
 // OTHER FUNCTIONS
-function sendMessageToContentScript(msg) {
-	// Get current tab
+function sendMessageToContentScript(msg) 
+{
+	// Get all Twitter tabs
 	let params = {url: "*://*.twitter.com/*"};
 	chrome.tabs.query(params, gotTabs);
 	
 	// Send message to content script
 	function gotTabs(activeTabs) 
 	{
-		for (let i = 0; i < activeTabs.length; i++) { chrome.tabs.sendMessage(activeTabs[i].id, msg); }
+		for (let i = 0; i < activeTabs.length; i++) 
+		{ 
+			chrome.tabs.sendMessage(activeTabs[i].id, msg); 
+		}
 	}
 }
