@@ -7,6 +7,7 @@
 // TWITTER ARTICLE DATA (aka the secret sauce)
 const ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
 const ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
+const REPLY_DIV_CLASS_STRING = "css-1dbjc4n r-1adg3ll r-1ny4l3l";
 const LIKED_TWEET_DATA = "M12 21.638h-.014C9.403";
 const REPLY_TWEET_DATA = "M14.046";
 const FOLLOWED_TWEET_DATA = "M12.225 12.165c-1.356";
@@ -21,7 +22,7 @@ const MAX_REPEATS = 10;
 
 // CHROME STORAGE
 // Get pop-up switch values
-var likesCheck = false, commentsCheck = false, followedCheck = false, topicCheck = false, retweetsCheck = false, disableHiding = false;
+var likesCheck = false, commentsCheck = false, followedCheck = false, topicCheck = false, retweetsCheck = false;
 chrome.storage.sync.get("likeSwitch", function(switchState) {
 	likesCheck = switchState.likeSwitch.checked;
 	if (likesCheck) { hideLikes(true); }
@@ -56,7 +57,7 @@ chrome.storage.sync.get("retweetsFilter", function(filterVal) {
 // Using arrive.js library w/ JQuery to hide matching Twitter articles as soon as they are loaded into the DOM
 $(document).arrive("article", function(articleData) 
 {
-	if (!disableHiding)
+	if (!location.href.includes("notification"))
 	{
 		// Get SVG data to check what type of article this is
 		let svg_data = $(articleData).find("path").attr("d");
@@ -139,27 +140,27 @@ function receivedMessage(message, sender, sendResponse)
 {
 	// POPUP MESSAGES
 	// Hide Likes switch toggled
-	if 		(message.command == "hideLikes") { likesCheck = true; if (!disableHiding) { hideLikes(true); } }
+	if 		(message.command == "hideLikes") { likesCheck = true; if (!location.href.includes("notification")) { hideLikes(true); } }
 	else if (message.command == "showLikes") { likesCheck = false; hideLikes(false); }
 	
 	// Hide Comments switch toggled
-	else if (message.command == "hideComments") { commentsCheck = true; if (!disableHiding) { hideComments(true); } }
+	else if (message.command == "hideComments") { commentsCheck = true; if (!location.href.includes("notification")) { hideComments(true); } }
 	else if (message.command == "showComments") { commentsCheck = false; hideComments(false); }
 
 	// Hide Followed By switch toggled
-	else if (message.command == "hideFollowed") { followedCheck = true; if (!disableHiding) { hideFollowed(true); } }
+	else if (message.command == "hideFollowed") { followedCheck = true; if (!location.href.includes("notification")) { hideFollowed(true); } }
 	else if (message.command == "showFollowed") { followedCheck = false; hideFollowed(false); }
 
 	// Hide Follow Topic switch toggled
-	else if (message.command == "hideTopic") { topicCheck = true; if (!disableHiding) { hideTopic(true); } }
+	else if (message.command == "hideTopic") { topicCheck = true; if (!location.href.includes("notification")) { hideTopic(true); } }
 	else if (message.command == "showTopic") { topicCheck = false; hideTopic(false); }
 
 	// Hide Retweets switch toggled
-	else if (message.command == "hideRetweets") { retweetsCheck = true; if (!disableHiding) { hideRetweets(true); }; }
+	else if (message.command == "hideRetweets") { retweetsCheck = true; if (!location.href.includes("notification")) { hideRetweets(true); }; }
 	else if (message.command == "showRetweets") { retweetsCheck = false; hideRetweets(false); }
 
 	// On tab loaded, hide any marked elements that might not have been caught
-	else if (message.command == "manualHideCheck" && !disableHiding)
+	else if (message.command == "manualHideCheck" && !location.href.includes("notification"))
 	{
 		if (likesCheck)    { hideLikes(true); }
 		if (commentsCheck) { hideComments(true); }
@@ -167,8 +168,6 @@ function receivedMessage(message, sender, sendResponse)
 		if (topicCheck)	   { hideTopic(true); }
 		if (retweetsCheck) { hideRetweets(true); }
 	}
-
-	else if (message.command == "disableHiding") { disableHiding = message.disable; }
 }
 
 
@@ -179,7 +178,7 @@ function hideLikes(hideVal)
 	// The SVG images at the top of tweets define what type of tweet it is (retweet, reply, like, etc.). This is one way we can
 	// find all the SVG images for each article on a Twitter timeline.
 	let article_refs = $("article");
-	let svg_data = "", svg_class = "";
+	let svg_data = "";
 	article_refs.each( function(index, data)
 	{
 		svg_data = $(data).find("path").attr("d");
@@ -200,7 +199,7 @@ function hideComments(hideVal)
 {
 	// Find all the SVG images for each article on a Twitter timeline.
 	let article_refs = $("article");
-	let svg_data = "", svg_class = "";
+	let svg_data = "";
 	article_refs.each( function(index, data)
 	{
 		svg_data = $(data).find("path").attr("d");
@@ -210,15 +209,31 @@ function hideComments(hideVal)
 		{
 			if (hideVal === true) 
 			{ 
-				// We need to hide both the main article and the one right after it, which is the reply
+				// Hide the main reply article
 				$(data).closest(ARTICLE_REPLY_DIV_CLASS).hide(); 
-				$(article_refs[index+1]).closest(ARTICLE_DIV_CLASS).parent().hide();
+
+				// Hide all reply children
+				for (i=1; i<10; i++) // Assuming Twitter won't be so heinous as to show more than 9 replies...
+				{
+					if ($(article_refs[index+i]).parent().parent()[0].className.toString() == REPLY_DIV_CLASS_STRING) 
+					{ 
+						$(article_refs[index+i]).parent().parent().hide(); 
+					}
+					else { $(article_refs[index+i]).parent().parent().hide(); break; } // This is the last reply in the thread
+				}
 			}
 			else 
 			{ 
-				// We need to show both the main article and the one right after it, which is the reply
+				// Show the main reply article and all children
 				$(data).closest(ARTICLE_REPLY_DIV_CLASS).show(); 
-				$(article_refs[index+1]).closest(ARTICLE_DIV_CLASS).parent().show();
+				for (i=1; i<10; i++)
+				{
+					if ($(article_refs[index+i]).parent().parent()[0].className.toString() == REPLY_DIV_CLASS_STRING) 
+					{ 
+						$(article_refs[index+i]).parent().parent().show(); 
+					}
+					else { $(article_refs[index+i]).parent().parent().show(); break; }
+				}
 			}	
 		}
 	});
@@ -229,7 +244,7 @@ function hideFollowed(hideVal)
 {
 	// Find all the SVG images for each article on a Twitter timeline.
 	let article_refs = $("article");
-	let svg_data = "", svg_class = "";
+	let svg_data = "";
 	article_refs.each( function(index, data)
 	{
 		svg_data = $(data).find("path").attr("d");
@@ -248,7 +263,7 @@ function hideTopic(hideVal)
 {
 	// Find all the SVG images for each article on a Twitter timeline.
 	let article_refs = $("article");
-	let svg_data = "", svg_class = "";
+	let svg_data = "";
 	article_refs.each( function(index, data)
 	{
 		svg_data = $(data).find("path").attr("d");
@@ -267,7 +282,7 @@ function hideRetweets(hideVal)
 {
 	// Find all the SVG images for each article on a Twitter timeline.
 	let article_refs = $("article");
-	let svg_data = "", svg_class = "";
+	let svg_data = "";
 	article_refs.each( function(index, data)
 	{
 		svg_data = $(data).find("path").attr("d");

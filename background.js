@@ -26,14 +26,10 @@ chrome.runtime.onInstalled.addListener (function() {
 	});
 });
 
-// onUpdated
-chrome.tabs.onUpdated.addListener(function (tabId , info) 
-{
-	// If URL changes, check if we went to the notifications screen, in which case we don't want to hide elements
-	if (info.url.includes("notification")) 		 { chrome.tabs.sendMessage(tabId, {command: "disableHiding", disable: true}); }
-	else if (!info.url.includes("notification")) { chrome.tabs.sendMessage(tabId, {command: "disableHiding", disable: false}); }
 
+// onUpdated
+chrome.tabs.onUpdated.addListener(function(tabId , info) 
+{
 	// After tab is finished loading, send message to CS to check if we need to hide any rogue elements (asynchronous is fuuun)
 	if (info.status === "complete") { chrome.tabs.sendMessage(tabId, {command: "manualHideCheck"}); }
-  });
-  
+});
