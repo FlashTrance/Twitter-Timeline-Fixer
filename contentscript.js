@@ -1,18 +1,20 @@
 // CONTENT SCRIPT
 
-// NOTE: Get this to work with other themes by checking the body style background-color, then setting the appropriate 
-// ARTICLE_DIV_CLASS and ARTICLE_REPLY_DIV_CLASS. Div classes and icon class list will need to be updated for every theme every time Twitter
-// changes something.
-
-// TWITTER ARTICLE DATA (aka the secret sauce)
-const ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
-const ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
+// TWITTER ARTICLE DATA (default values assume Dim BG)
+var ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
+var ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
 const REPLY_DIV_CLASS_STRING = "css-1dbjc4n r-1adg3ll r-1ny4l3l";
 const LIKED_TWEET_DATA = "M12 21.638h-.014C9.403";
 const REPLY_TWEET_DATA = "M14.046";
 const FOLLOWED_TWEET_DATA = "M12.225 12.165c-1.356";
 const FOLLOW_TOPIC_DATA = "M18.265";
 const RETWEET_DATA = "M23.615";
+
+// BODY BG COLORS
+const DIM_BG = ["#15202B", "rgb(21, 32, 43)"];
+const DEFAULT_BG = ["#FFFFFF", "rgb(255, 255, 255)"];
+const LIGHTS_OUT_BG = ["#15202B", "rgb(0, 0, 0)"];
+
 
 // INTERVAL DATA
 var hideCommentHandle;
@@ -52,13 +54,30 @@ chrome.storage.sync.get("retweetsFilter", function(filterVal) {
 });
 
 
-
-// ARRIVE.JS LISTENER
+// ARRIVE.JS LISTENER - ARTICLES
 // Using arrive.js library w/ JQuery to hide matching Twitter articles as soon as they are loaded into the DOM
 $(document).arrive("article", function(articleData) 
 {
 	if (!location.href.includes("notification"))
 	{
+		// Check if body bg style is something besides DIM, so we can set article data appropriately
+		bodyData = $(document).find("body");
+		if (LIGHTS_OUT_BG.includes($(bodyData).css("background-color")))
+		{
+			ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1igl3o0.r-qklmqi.r-1adg3ll.r-1ny4l3l";
+			//ARTICLE_REPLY_DIV_CLASS = "css-1dbjc4n r-1adg3ll r-1ny4l3l";
+		}
+		else if (DEFAULT_BG.includes($(bodyData).css("background-color")))
+		{
+			ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-j7yic.r-qklmqi.r-1adg3ll.r-1ny4l3l";
+			//ARTICLE_REPLY_DIV_CLASS = "css-1dbjc4n r-1adg3ll r-1ny4l3l";
+		}
+		else
+		{
+			ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
+			//ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
+		}
+
 		// Get SVG data to check what type of article this is
 		let svg_data = $(articleData).find("path").attr("d");
 		if (svg_data !== undefined)
@@ -130,7 +149,6 @@ $(document).arrive("article", function(articleData)
 	}
 	
 });
-
 
 
 // receivedMessage()
