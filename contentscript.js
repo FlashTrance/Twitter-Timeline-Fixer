@@ -69,7 +69,7 @@ $(document).arrive("article", function(articleData)
 		}
 		else if (DEFAULT_BG.includes($(bodyData).css("background-color")))
 		{
-			ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-j7yic.r-qklmqi.r-1adg3ll.r-1ny4l3l";
+			ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-j5o65s.r-qklmqi.r-1adg3ll.r-1ny4l3l";
 			//ARTICLE_REPLY_DIV_CLASS = "css-1dbjc4n r-1adg3ll r-1ny4l3l";
 		}
 		else
