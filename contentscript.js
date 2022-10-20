@@ -4,11 +4,12 @@
 var ARTICLE_DIV_CLASS = "div.css-1dbjc4n.r-1ila09b.r-qklmqi.r-1adg3ll.r-1ny4l3l";
 var ARTICLE_REPLY_DIV_CLASS = "div.css-1dbjc4n.r-1adg3ll.r-1ny4l3l";
 const REPLY_DIV_CLASS_STRING = "css-1dbjc4n r-1adg3ll r-1ny4l3l";
-const LIKED_TWEET_DATA = "M12 21.638h-.014C9.403";
-const REPLY_TWEET_DATA = "M14.046";
-const FOLLOWED_TWEET_DATA = "M12.225 12.165c-1.356";
-const FOLLOW_TOPIC_DATA = "M18.265";
-const RETWEET_DATA = "M23.615";
+const LIKED_TWEET_DATA = "M20.884 13.19c-1.351";
+const REPLY_TWEET_DATA = "M1.751 10c0-4.42 3.584-8";
+const FOLLOWED_TWEET_DATA = "M17.863 13.44c1.477";
+const FOLLOW_TOPIC_DATA = "M12 1.75c-5.11 0-9.25";
+const RETWEET_DATA = "M4.75 3.79l4.603 4.3-1.706 1.82L6";
+
 
 // BODY BG COLORS
 const DIM_BG = ["#15202B", "rgb(21, 32, 43)"];
@@ -80,6 +81,7 @@ $(document).arrive("article", function(articleData)
 
 		// Get SVG data to check what type of article this is
 		let svg_data = $(articleData).find("path").attr("d");
+		console.log(svg_data);
 		if (svg_data !== undefined)
 		{
 			// HIDE OTHERS' LIKES
